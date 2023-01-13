@@ -9,6 +9,7 @@ using namespace cv;
 using namespace std;
 
 
+
 unsigned char* BinaryImage(unsigned char* img, int w, int h, double th, double maxVal)
 {
 	unsigned char* result = new unsigned char[w*h];
@@ -30,7 +31,6 @@ unsigned char* gaussianBlur(unsigned char* img, int w, int h)
 	return result;
 }
 
-
 unsigned char* DetectorMuchii(unsigned char* img, int w, int h)
 {
 	unsigned char* result = new unsigned char[w * h];
@@ -43,17 +43,19 @@ unsigned char* DetectorMuchii(unsigned char* img, int w, int h)
 	return result;
 }
 
-Mat changeBorderColor(Mat img) {
-	Mat ret = img;
-	for (int y = 0; y < img.size().height; y++) {
-		for (int x = 0; x < img.size().width; x++) {
-			Vec3b &color = img.at<Vec3b>(Point(y, x));
-			if (color[0] == 255) {
-				color[2] = 0;
-				color[1] = 0;
+void filled(Mat img) {
+	Mat ret;
+	Point seed(0,0);
+	//floodFill(img, seed, Scalar(100));
+	for (int i = 0; i < img.rows; i++) {
+		for (int j = 0; j < img.cols; j++) {
+			unsigned char pixel = img.at<uchar>(i, j);
+			if (pixel == 0 && (j - 50) > 0 && (j + 50) < img.cols && img.at<uchar>(i, j - 50) == 255 && img.at<uchar>(i, j + 50) == 255) {
+				
 			}
-			img.at<Vec3b>(Point(x, y)) = color;
 		}
 	}
-	return ret;
 }
+
+
+
